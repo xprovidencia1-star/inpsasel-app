@@ -19,7 +19,8 @@ import {
   Map as MapIcon,
   User,
   Phone,
-  Mail
+  Mail,
+  Volume2
 } from 'lucide-react';
 import { LOCATIONS, Location } from './constants';
 import { getDirections } from './services/geminiService';
@@ -36,7 +37,16 @@ export default function App() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | undefined>();
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
   const [safetyTips, setSafetyTips] = useState<string[]>([]);
+
+  const REGIONS = [
+    { id: 'capital', label: 'Capital', filter: 'Caracas|Miranda' },
+    { id: 'centro', label: 'Centro', filter: 'Aragua|Carabobo|Cojedes|Guárico|Yaracuy' },
+    { id: 'occidente', label: 'Occidente', filter: 'Zulia|Falcón|Lara|Trujillo|Mérida|Táchira' },
+    { id: 'oriente', label: 'Oriente', filter: 'Anzoátegui|Monagas|Sucre|Nueva Esparta' },
+    { id: 'llanos', label: 'Llanos / Sur', filter: 'Apure|Barinas|Portuguesa|Bolívar|Amazonas|Delta Amacuro' }
+  ];
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -70,11 +80,21 @@ export default function App() {
   }, []);
 
   const filteredLocations = useMemo(() => {
-    return LOCATIONS.filter(loc =>
-      loc.state.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      loc.address.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [searchQuery]);
+    return LOCATIONS.filter(loc => {
+      const matchesSearch = loc.state.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        loc.address.toLowerCase().includes(searchQuery.toLowerCase());
+
+      if (!selectedRegion) return matchesSearch;
+
+      const regionObj = REGIONS.find(r => r.id === selectedRegion);
+      if (!regionObj) return matchesSearch;
+
+      const regionStates = regionObj.filter.toLowerCase().split('|');
+      const matchesRegion = regionStates.some(stateName => loc.state.toLowerCase().includes(stateName));
+
+      return matchesSearch && matchesRegion;
+    });
+  }, [searchQuery, selectedRegion]);
 
   const handleLocationClick = async (loc: Location) => {
     setSelectedLocation(loc);
@@ -191,6 +211,27 @@ export default function App() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-12 md:pl-16 pr-6 md:pr-8 py-5 md:py-6 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl md:rounded-3xl shadow-xl shadow-blue-900/5 focus:ring-4 focus:ring-blue-500/20 focus:border-[#004A99] outline-none transition-all text-base md:text-xl font-medium text-gray-800 placeholder-gray-400"
                 />
+              </div>
+
+              {/* Region Filters */}
+              <div className="mt-4 flex gap-2 overflow-x-auto pb-2 custom-scrollbar justify-start md:justify-center">
+                <button
+                  onClick={() => setSelectedRegion(null)}
+                  className={`shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-all ${!selectedRegion ? 'bg-[#004A99] text-white shadow-md' : 'bg-white text-gray-600 border border-gray-200 hover:bg-blue-50 hover:text-blue-600'
+                    }`}
+                >
+                  Todas
+                </button>
+                {REGIONS.map(region => (
+                  <button
+                    key={region.id}
+                    onClick={() => setSelectedRegion(region.id)}
+                    className={`shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-all ${selectedRegion === region.id ? 'bg-[#004A99] text-white shadow-md' : 'bg-white text-gray-600 border border-gray-200 hover:bg-blue-50 hover:text-blue-600'
+                      }`}
+                  >
+                    {region.label}
+                  </button>
+                ))}
               </div>
             </motion.div>
           </div>
@@ -366,26 +407,58 @@ export default function App() {
                   </div>
 
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-                    {/* Directions Card */}
-                    <div className="bg-white rounded-3xl lg:rounded-[40px] p-6 lg:p-10 border border-gray-100 shadow-sm order-2 lg:order-1">
-                      <div className="flex items-center gap-4 mb-6 lg:mb-8">
-                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-blue-50 text-blue-600 rounded-xl lg:rounded-2xl flex items-center justify-center shrink-0">
-                          <Navigation className="w-5 h-5 lg:w-6 lg:h-6" />
-                        </div>
-                        <h3 className="font-black text-lg lg:text-xl">Guía de Llegada</h3>
+                    {/* Map & Directions Column */}
+                    <div className="space-y-6 lg:space-y-8 order-2 lg:order-1">
+                      {/* Interactive Map */}
+                      <div className="bg-white rounded-3xl lg:rounded-[40px] p-2 border border-gray-100 shadow-sm overflow-hidden h-[300px] md:h-[400px]">
+                        <iframe
+                          width="100%"
+                          height="100%"
+                          style={{ border: 0, borderRadius: '1.5rem' }}
+                          loading="lazy"
+                          allowFullScreen
+                          referrerPolicy="no-referrer-when-downgrade"
+                          src={`https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY_HERE&q=${encodeURIComponent(selectedLocation.lat && selectedLocation.lng ? `${selectedLocation.lat},${selectedLocation.lng}` : selectedLocation.address)}`}
+                        ></iframe>
                       </div>
 
-                      {loading ? (
-                        <div className="space-y-4">
-                          <div className="h-4 bg-gray-50 rounded w-full animate-pulse"></div>
-                          <div className="h-4 bg-gray-50 rounded w-5/6 animate-pulse"></div>
-                          <div className="h-4 bg-gray-50 rounded w-4/6 animate-pulse"></div>
+                      {/* Directions Card */}
+                      <div className="bg-white rounded-3xl lg:rounded-[40px] p-6 lg:p-10 border border-gray-100 shadow-sm">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 lg:mb-8">
+                          <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 lg:w-12 lg:h-12 bg-blue-50 text-blue-600 rounded-xl lg:rounded-2xl flex items-center justify-center shrink-0">
+                              <Navigation className="w-5 h-5 lg:w-6 lg:h-6" />
+                            </div>
+                            <h3 className="font-black text-lg lg:text-xl">Guía de Llegada</h3>
+                          </div>
+                          {directions?.text && (
+                            <button
+                              onClick={() => {
+                                const utterance = new SpeechSynthesisUtterance(directions.text);
+                                utterance.lang = 'es-VE';
+                                window.speechSynthesis.speak(utterance);
+                              }}
+                              className="flex items-center justify-center gap-2 bg-blue-50 text-blue-700 hover:bg-blue-100 px-4 py-2 rounded-xl font-bold text-xs transition-colors"
+                              title="Escuchar indicaciones"
+                            >
+                              <Volume2 size={16} />
+                              <span className="hidden sm:inline">Leer en voz alta</span>
+                            </button>
+                          )}
                         </div>
-                      ) : (
-                        <div className="prose prose-sm md:prose-base prose-blue max-w-none text-gray-600 leading-relaxed font-medium">
-                          <ReactMarkdown>{directions?.text || "Instrucciones no disponibles."}</ReactMarkdown>
-                        </div>
-                      )}
+
+                        {loading ? (
+                          <div className="space-y-4">
+                            <div className="h-4 bg-gray-50 rounded w-full animate-pulse"></div>
+                            <div className="h-4 bg-gray-50 rounded w-5/6 animate-pulse"></div>
+                            <div className="h-4 bg-gray-50 rounded w-4/6 animate-pulse"></div>
+                          </div>
+                        ) : (
+                          <div className="prose prose-sm md:prose-base prose-blue max-w-none text-gray-600 leading-relaxed font-medium">
+                            <ReactMarkdown>{directions?.text || "Instrucciones no disponibles."}</ReactMarkdown>
+                          </div>
+                        )}
+                      </div>
                     </div>
 
                     {/* Weather Card */}
