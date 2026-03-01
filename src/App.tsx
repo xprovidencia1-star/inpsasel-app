@@ -103,15 +103,15 @@ export default function App() {
   return (
     <div className="min-h-screen bg-white text-[#1A1A1A] font-sans selection:bg-blue-100">
       {/* Top Navigation Bar */}
-      <nav className="sticky top-0 z-50 bg-white border-b border-gray-100 px-6 py-4">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-[#004A99] rounded-full flex items-center justify-center text-white shadow-lg shadow-blue-100">
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100 px-6 py-4 shadow-sm shadow-blue-900/5">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex items-center gap-4 w-full md:w-auto">
+            <div className="w-12 h-12 bg-gradient-to-br from-[#004A99] to-[#002f66] rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-900/20">
               <ShieldCheck size={28} />
             </div>
             <div>
-              <h1 className="text-xl font-extrabold tracking-tight text-[#004A99]">INPSASEL</h1>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Portal de Atención Ciudadana</p>
+              <h1 className="text-2xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#004A99] to-blue-600">INPSASEL</h1>
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">Portal de Atención Ciudadana</p>
             </div>
           </div>
 
@@ -142,30 +142,55 @@ export default function App() {
 
       {/* Hero Section */}
       {!selectedLocation && (
-        <section className="bg-[#F8FAFC] py-16 px-6 border-b border-gray-100">
-          <div className="max-w-4xl mx-auto text-center">
+        <section className="relative overflow-hidden bg-[#F8FAFC] py-20 px-6 border-b border-gray-100">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"></div>
+
+          <div className="max-w-4xl mx-auto text-center relative z-10">
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="inline-block px-4 py-1.5 bg-white border border-gray-200 text-gray-600 text-xs font-bold rounded-full uppercase tracking-widest mb-8 shadow-sm"
+            >
+              Consultas Nacionales 📍
+            </motion.div>
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-5xl font-black text-[#004A99] mb-6 leading-tight"
+              transition={{ delay: 0.1 }}
+              className="text-5xl md:text-6xl font-black text-[#1A1A1A] mb-6 leading-tight"
             >
-              Encuentra tu sede <br /> más cercana
+              Encuentra tu sede <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#004A99] to-blue-500">más cercana</span>
             </motion.h2>
-            <p className="text-lg text-gray-500 mb-10 max-w-2xl mx-auto">
-              Accede a la red nacional de sedes de Inpsasel. Obtén direcciones precisas,
-              clima en tiempo real y recomendaciones de seguridad para tu visita.
-            </p>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-lg text-gray-500 mb-12 max-w-2xl mx-auto font-medium"
+            >
+              Accede a la red nacional de sedes de Inpsasel. Obtén direcciones exactas,
+              clima en tiempo real y recomendaciones de seguridad.
+            </motion.p>
 
-            <div className="relative max-w-xl mx-auto">
-              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-              <input
-                type="text"
-                placeholder="Busca por estado o dirección..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-14 pr-6 py-5 bg-white border border-gray-200 rounded-2xl shadow-xl shadow-blue-50/50 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-lg font-medium"
-              />
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="relative max-w-2xl mx-auto group"
+            >
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-emerald-100 rounded-[2rem] blur opacity-50 group-hover:opacity-100 transition duration-500"></div>
+              <div className="relative">
+                <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-[#004A99]/50" size={24} />
+                <input
+                  type="text"
+                  placeholder="Busca por estado o dirección completa..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-16 pr-8 py-6 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-3xl shadow-xl shadow-blue-900/5 focus:ring-4 focus:ring-blue-500/20 focus:border-[#004A99] outline-none transition-all text-xl font-medium text-gray-800 placeholder-gray-400"
+                />
+              </div>
+            </motion.div>
           </div>
         </section>
       )}
@@ -206,17 +231,22 @@ export default function App() {
                   <button
                     key={loc.id}
                     onClick={() => handleLocationClick(loc)}
-                    className={`w-full text-left p-5 rounded-2xl border transition-all group ${selectedLocation?.id === loc.id
-                      ? 'bg-[#004A99] border-[#004A99] text-white shadow-2xl shadow-blue-200'
-                      : 'bg-white border-gray-100 hover:border-blue-200 hover:bg-blue-50/30'
+                    className={`w-full text-left p-5 rounded-2xl border transition-all duration-300 group relative overflow-hidden ${selectedLocation?.id === loc.id
+                      ? 'bg-[#004A99] border-[#004A99] text-white shadow-xl shadow-blue-900/20 translate-x-2'
+                      : 'bg-white border-gray-100 hover:border-blue-200 hover:shadow-md hover:-translate-y-1'
                       }`}
                   >
-                    <p className={`text-[10px] font-black uppercase tracking-widest mb-2 ${selectedLocation?.id === loc.id ? 'text-blue-200' : 'text-blue-600'}`}>
+                    {selectedLocation?.id === loc.id && (
+                      <div className="absolute inset-0 bg-gradient-to-r from-white/0 to-white/10"></div>
+                    )}
+                    <p className={`text-[10px] font-black uppercase tracking-widest mb-2 ${selectedLocation?.id === loc.id ? 'text-blue-200' : 'text-blue-500'}`}>
                       {loc.state}
                     </p>
                     <div className="flex items-center justify-between gap-4">
-                      <p className="font-bold text-sm leading-snug line-clamp-2">{loc.address}</p>
-                      <ChevronRight className={`shrink-0 transition-transform group-hover:translate-x-1 ${selectedLocation?.id === loc.id ? 'text-white' : 'text-gray-300'}`} size={18} />
+                      <p className={`font-bold text-sm leading-snug line-clamp-2 ${selectedLocation?.id === loc.id ? 'text-white' : 'text-gray-800'}`}>{loc.address}</p>
+                      <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all ${selectedLocation?.id === loc.id ? 'bg-white/20' : 'bg-gray-50 group-hover:bg-blue-50'}`}>
+                        <ChevronRight className={`transition-transform group-hover:translate-x-0.5 ${selectedLocation?.id === loc.id ? 'text-white' : 'text-blue-600'}`} size={16} />
+                      </div>
                     </div>
                   </button>
                 ))}
@@ -443,10 +473,10 @@ export default function App() {
 
         {/* WhatsApp Error Reporting Button */}
         <a
-          href="https://wa.me/584140000000?text=Hola,%20quisiera%20reportar%20un%20error%20con%20la%20dirección%20de%20una%20sede%20en%20la%20App%20Inpsasel."
+          href="https://wa.me/584120903294?text=Hola,%20quisiera%20reportar%20un%20error%20con%20la%20dirección%20de%20una%20sede%20en%20la%20App%20Inpsasel."
           target="_blank"
           rel="noreferrer"
-          className="group flex items-center gap-3 bg-[#25D366] text-white p-4 rounded-full shadow-2xl shadow-green-500/30 hover:-translate-y-1 hover:bg-[#128C7E] transition-all border border-green-400/30 backdrop-blur-md"
+          className="group flex items-center gap-3 bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white p-4 rounded-full shadow-2xl shadow-green-500/30 hover:-translate-y-1 hover:brightness-110 transition-all border border-green-400/30 backdrop-blur-md"
         >
           <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out font-black text-sm pl-2">
             Reportar Error
