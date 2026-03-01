@@ -1,12 +1,12 @@
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  MapPin, 
-  Navigation, 
-  Clock, 
-  Cloud, 
-  ChevronRight, 
-  ArrowLeft, 
+import {
+  MapPin,
+  Navigation,
+  Clock,
+  Cloud,
+  ChevronRight,
+  ArrowLeft,
   ExternalLink,
   Loader2,
   Sun,
@@ -38,7 +38,7 @@ export default function App() {
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-    
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (pos) => {
@@ -68,7 +68,7 @@ export default function App() {
   }, []);
 
   const filteredLocations = useMemo(() => {
-    return LOCATIONS.filter(loc => 
+    return LOCATIONS.filter(loc =>
       loc.state.toLowerCase().includes(searchQuery.toLowerCase()) ||
       loc.address.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -83,7 +83,7 @@ export default function App() {
     try {
       const dirPromise = getDirections(loc.address, userCoords);
       const coords = await geocodeAddress(loc.address + ", Venezuela");
-      
+
       if (coords) {
         const weatherPromise = getWeather(coords.lat, coords.lng);
         const [dirResult, weatherResult] = await Promise.all([dirPromise, weatherPromise]);
@@ -114,7 +114,7 @@ export default function App() {
               <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Portal de Atención Ciudadana</p>
             </div>
           </div>
-          
+
           <div className="hidden md:flex items-center gap-8">
             <div className="flex flex-col items-end">
               <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Tu Ubicación</span>
@@ -144,7 +144,7 @@ export default function App() {
       {!selectedLocation && (
         <section className="bg-[#F8FAFC] py-16 px-6 border-b border-gray-100">
           <div className="max-w-4xl mx-auto text-center">
-            <motion.h2 
+            <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="text-5xl font-black text-[#004A99] mb-6 leading-tight"
@@ -152,13 +152,13 @@ export default function App() {
               Encuentra tu sede <br /> más cercana
             </motion.h2>
             <p className="text-lg text-gray-500 mb-10 max-w-2xl mx-auto">
-              Accede a la red nacional de sedes de Inpsasel. Obtén direcciones precisas, 
+              Accede a la red nacional de sedes de Inpsasel. Obtén direcciones precisas,
               clima en tiempo real y recomendaciones de seguridad para tu visita.
             </p>
-            
+
             <div className="relative max-w-xl mx-auto">
               <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-              <input 
+              <input
                 type="text"
                 placeholder="Busca por estado o dirección..."
                 value={searchQuery}
@@ -172,7 +172,7 @@ export default function App() {
 
       <main className="max-w-7xl mx-auto p-6 md:p-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          
+
           {/* Sidebar / List */}
           <div className={`lg:col-span-4 space-y-8 ${selectedLocation ? 'hidden lg:block' : 'block'}`}>
             {selectedLocation && (
@@ -200,17 +200,16 @@ export default function App() {
                 <h3 className="text-sm font-black uppercase tracking-[0.2em] text-gray-400">Sedes Disponibles</h3>
                 <span className="text-xs font-bold bg-gray-100 px-2 py-1 rounded-md text-gray-500">{filteredLocations.length}</span>
               </div>
-              
+
               <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
                 {filteredLocations.map((loc) => (
                   <button
                     key={loc.id}
                     onClick={() => handleLocationClick(loc)}
-                    className={`w-full text-left p-5 rounded-2xl border transition-all group ${
-                      selectedLocation?.id === loc.id 
-                      ? 'bg-[#004A99] border-[#004A99] text-white shadow-2xl shadow-blue-200' 
+                    className={`w-full text-left p-5 rounded-2xl border transition-all group ${selectedLocation?.id === loc.id
+                      ? 'bg-[#004A99] border-[#004A99] text-white shadow-2xl shadow-blue-200'
                       : 'bg-white border-gray-100 hover:border-blue-200 hover:bg-blue-50/30'
-                    }`}
+                      }`}
                   >
                     <p className={`text-[10px] font-black uppercase tracking-widest mb-2 ${selectedLocation?.id === loc.id ? 'text-blue-200' : 'text-blue-600'}`}>
                       {loc.state}
@@ -250,19 +249,62 @@ export default function App() {
           {/* Main Content Area */}
           <div className={`lg:col-span-8 ${!selectedLocation ? 'hidden lg:block' : 'block'}`}>
             {!selectedLocation ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="p-10 bg-blue-50 rounded-[40px] border border-blue-100 flex flex-col justify-between min-h-[300px]">
-                  <MapIcon className="text-blue-600 mb-6" size={48} />
-                  <div>
-                    <h3 className="text-2xl font-black text-blue-900 mb-2">Mapa Interactivo</h3>
-                    <p className="text-blue-700/70 font-medium">Selecciona una sede para visualizar su ubicación exacta y obtener la mejor ruta.</p>
-                  </div>
+              <div className="space-y-6">
+                {/* External Links Section */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <a
+                    href="https://www.inpsaseletica.gob.ve/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group bg-gradient-to-br from-[#004A99] to-blue-800 p-8 rounded-3xl text-white shadow-xl shadow-blue-200 hover:-translate-y-1 transition-all flex flex-col justify-between"
+                  >
+                    <div className="flex items-start justify-between mb-6">
+                      <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+                        <ShieldCheck size={24} className="text-white" />
+                      </div>
+                      <ExternalLink size={20} className="text-blue-200 group-hover:text-white transition-colors" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-black mb-2">Portal INPSASEL Ética</h3>
+                      <p className="text-sm text-blue-100/80 font-medium">Ingresa al portal de ética para tus gestiones oficiales.</p>
+                    </div>
+                  </a>
+
+                  <a
+                    href="https://www.linkedin.com/pulse/gu%C3%ADa-epsica-de-registro-profesionales-sst-en-inpsasel-elio-pimentel-uu6de/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group bg-white border-2 border-emerald-100 p-8 rounded-3xl hover:border-emerald-500 hover:shadow-xl hover:shadow-emerald-100 hover:-translate-y-1 transition-all flex flex-col justify-between"
+                  >
+                    <div className="flex items-start justify-between mb-6">
+                      <div className="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center">
+                        <User size={24} className="text-emerald-600" />
+                      </div>
+                      <ExternalLink size={20} className="text-gray-300 group-hover:text-emerald-500 transition-colors" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-black text-[#1A1A1A] mb-2">Guía de Registro</h3>
+                      <p className="text-sm text-gray-500 font-medium mb-3">Guía EPSICA de Registro de Profesionales SST.</p>
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Créditos: Elio Pimentel</p>
+                    </div>
+                  </a>
                 </div>
-                <div className="p-10 bg-emerald-50 rounded-[40px] border border-emerald-100 flex flex-col justify-between min-h-[300px]">
-                  <ShieldCheck className="text-emerald-600 mb-6" size={48} />
-                  <div>
-                    <h3 className="text-2xl font-black text-emerald-900 mb-2">Trámites Seguros</h3>
-                    <p className="text-emerald-700/70 font-medium">Información oficial actualizada para tus gestiones ante el Inpsasel.</p>
+
+                {/* Map and Features Section */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="p-10 bg-blue-50 rounded-[40px] border border-blue-100 flex flex-col justify-between min-h-[300px]">
+                    <MapIcon className="text-blue-600 mb-6" size={48} />
+                    <div>
+                      <h3 className="text-2xl font-black text-blue-900 mb-2">Mapa Interactivo</h3>
+                      <p className="text-blue-700/70 font-medium">Selecciona una sede para visualizar su ubicación exacta y obtener la mejor ruta.</p>
+                    </div>
+                  </div>
+                  <div className="p-10 bg-emerald-50 rounded-[40px] border border-emerald-100 flex flex-col justify-between min-h-[300px]">
+                    <ShieldCheck className="text-emerald-600 mb-6" size={48} />
+                    <div>
+                      <h3 className="text-2xl font-black text-emerald-900 mb-2">Trámites Seguros</h3>
+                      <p className="text-emerald-700/70 font-medium">Información oficial actualizada para tus gestiones ante el Inpsasel.</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -275,7 +317,7 @@ export default function App() {
                   exit={{ opacity: 0, x: -20 }}
                   className="space-y-8"
                 >
-                  <button 
+                  <button
                     onClick={() => setSelectedLocation(null)}
                     className="flex items-center gap-2 text-gray-400 font-bold hover:text-[#004A99] transition-colors"
                   >
@@ -291,16 +333,16 @@ export default function App() {
                         </span>
                         <h2 className="text-4xl font-black text-[#1A1A1A] leading-tight mb-4">{selectedLocation.address}</h2>
                       </div>
-                      
+
                       {loading ? (
                         <div className="flex items-center gap-3 text-blue-600 font-bold bg-blue-50 px-6 py-3 rounded-2xl">
                           <Loader2 className="animate-spin" size={20} />
                           Localizando...
                         </div>
                       ) : directions?.mapLinks[0] && (
-                        <a 
-                          href={directions.mapLinks[0]} 
-                          target="_blank" 
+                        <a
+                          href={directions.mapLinks[0]}
+                          target="_blank"
                           rel="noreferrer"
                           className="inline-flex items-center gap-3 bg-[#004A99] text-white px-8 py-4 rounded-2xl font-black hover:bg-blue-800 transition-all shadow-xl shadow-blue-200 hover:-translate-y-1"
                         >
@@ -320,7 +362,7 @@ export default function App() {
                         </div>
                         <h3 className="font-black text-xl">Guía de Llegada</h3>
                       </div>
-                      
+
                       {loading ? (
                         <div className="space-y-4">
                           <div className="h-4 bg-gray-50 rounded w-full animate-pulse"></div>
@@ -386,22 +428,31 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-[#F8FAFC] border-t border-gray-100 mt-20 py-20 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+      <footer className="bg-[#1A1A1A] border-t border-gray-800 mt-20 py-16 px-6 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"></div>
+
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 relative z-10">
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
+            <div className="w-12 h-12 bg-gray-800 rounded-2xl flex items-center justify-center shadow-inner shadow-white/5 border border-white/10">
+              <ShieldCheck size={24} className="text-gray-400" />
+            </div>
             <div>
-              <p className="font-black text-gray-900">INPSASEL</p>
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Gobierno Bolivariano de Venezuela</p>
+              <p className="font-black text-white text-lg tracking-tight">INPSASEL</p>
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">Seguridad y Salud en el Trabajo</p>
             </div>
           </div>
-          <div className="text-center">
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-[0.3em]">Seguridad y Salud en el Trabajo</p>
-          </div>
-          <div className="flex justify-end gap-6">
-            <div className="w-8 h-8 bg-gray-100 rounded-lg"></div>
-            <div className="w-8 h-8 bg-gray-100 rounded-lg"></div>
-            <div className="w-8 h-8 bg-gray-100 rounded-lg"></div>
+
+          <div className="flex flex-col items-center md:items-end text-center md:text-right">
+            <p className="text-sm font-medium text-gray-400">
+              Desarrollado y diseñado con <span className="text-red-500 animate-pulse inline-block">❤️</span> por
+            </p>
+            <p className="text-lg font-black text-white mt-1">
+              Moises Tortolero
+              <span className="text-blue-500 mx-2">•</span>
+              <a href="#" className="hover:text-blue-400 transition-colors bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">CEO de Providencia.pro</a>
+            </p>
           </div>
         </div>
       </footer>
