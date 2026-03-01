@@ -249,62 +249,19 @@ export default function App() {
           {/* Main Content Area */}
           <div className={`lg:col-span-8 ${!selectedLocation ? 'hidden lg:block' : 'block'}`}>
             {!selectedLocation ? (
-              <div className="space-y-6">
-                {/* External Links Section */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <a
-                    href="https://www.inpsaseletica.gob.ve/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="group bg-gradient-to-br from-[#004A99] to-blue-800 p-8 rounded-3xl text-white shadow-xl shadow-blue-200 hover:-translate-y-1 transition-all flex flex-col justify-between"
-                  >
-                    <div className="flex items-start justify-between mb-6">
-                      <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-sm">
-                        <ShieldCheck size={24} className="text-white" />
-                      </div>
-                      <ExternalLink size={20} className="text-blue-200 group-hover:text-white transition-colors" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-black mb-2">Portal INPSASEL Ética</h3>
-                      <p className="text-sm text-blue-100/80 font-medium">Ingresa al portal de ética para tus gestiones oficiales.</p>
-                    </div>
-                  </a>
-
-                  <a
-                    href="https://www.linkedin.com/pulse/gu%C3%ADa-epsica-de-registro-profesionales-sst-en-inpsasel-elio-pimentel-uu6de/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="group bg-white border-2 border-emerald-100 p-8 rounded-3xl hover:border-emerald-500 hover:shadow-xl hover:shadow-emerald-100 hover:-translate-y-1 transition-all flex flex-col justify-between"
-                  >
-                    <div className="flex items-start justify-between mb-6">
-                      <div className="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center">
-                        <User size={24} className="text-emerald-600" />
-                      </div>
-                      <ExternalLink size={20} className="text-gray-300 group-hover:text-emerald-500 transition-colors" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-black text-[#1A1A1A] mb-2">Guía de Registro</h3>
-                      <p className="text-sm text-gray-500 font-medium mb-3">Guía EPSICA de Registro de Profesionales SST.</p>
-                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Créditos: Elio Pimentel</p>
-                    </div>
-                  </a>
-                </div>
-
-                {/* Map and Features Section */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="p-10 bg-blue-50 rounded-[40px] border border-blue-100 flex flex-col justify-between min-h-[300px]">
-                    <MapIcon className="text-blue-600 mb-6" size={48} />
-                    <div>
-                      <h3 className="text-2xl font-black text-blue-900 mb-2">Mapa Interactivo</h3>
-                      <p className="text-blue-700/70 font-medium">Selecciona una sede para visualizar su ubicación exacta y obtener la mejor ruta.</p>
-                    </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="p-10 bg-blue-50 rounded-[40px] border border-blue-100 flex flex-col justify-between min-h-[300px]">
+                  <MapIcon className="text-blue-600 mb-6" size={48} />
+                  <div>
+                    <h3 className="text-2xl font-black text-blue-900 mb-2">Mapa Interactivo</h3>
+                    <p className="text-blue-700/70 font-medium">Selecciona una sede para visualizar su ubicación exacta y obtener la mejor ruta.</p>
                   </div>
-                  <div className="p-10 bg-emerald-50 rounded-[40px] border border-emerald-100 flex flex-col justify-between min-h-[300px]">
-                    <ShieldCheck className="text-emerald-600 mb-6" size={48} />
-                    <div>
-                      <h3 className="text-2xl font-black text-emerald-900 mb-2">Trámites Seguros</h3>
-                      <p className="text-emerald-700/70 font-medium">Información oficial actualizada para tus gestiones ante el Inpsasel.</p>
-                    </div>
+                </div>
+                <div className="p-10 bg-emerald-50 rounded-[40px] border border-emerald-100 flex flex-col justify-between min-h-[300px]">
+                  <ShieldCheck className="text-emerald-600 mb-6" size={48} />
+                  <div>
+                    <h3 className="text-2xl font-black text-emerald-900 mb-2">Trámites Seguros</h3>
+                    <p className="text-emerald-700/70 font-medium">Información oficial actualizada para tus gestiones ante el Inpsasel.</p>
                   </div>
                 </div>
               </div>
@@ -456,6 +413,34 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* Floating Action Buttons */}
+      <div className="fixed bottom-8 right-8 z-[100] flex flex-col gap-4">
+        <a
+          href="https://www.inpsaseletica.gob.ve/"
+          target="_blank"
+          rel="noreferrer"
+          className="group flex items-center gap-3 bg-[#004A99] text-white p-4 rounded-full shadow-2xl shadow-blue-500/30 hover:-translate-y-1 hover:bg-blue-800 transition-all border border-blue-400/30 backdrop-blur-md"
+        >
+          <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out font-black text-sm pl-2">
+            INPSASEL Ética
+          </span>
+          <ShieldCheck size={24} className="shrink-0" />
+        </a>
+
+        <a
+          href="https://www.linkedin.com/pulse/gu%C3%ADa-epsica-de-registro-profesionales-sst-en-inpsasel-elio-pimentel-uu6de/"
+          target="_blank"
+          rel="noreferrer"
+          className="group flex items-center gap-3 bg-emerald-500 text-white p-4 rounded-full shadow-2xl shadow-emerald-500/30 hover:-translate-y-1 hover:bg-emerald-600 transition-all border border-emerald-400/30 backdrop-blur-md"
+        >
+          <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out font-black text-sm pl-2 flex flex-col items-end leading-none">
+            <span>Guía EPSICA Registro</span>
+            <span className="text-[9px] font-bold text-emerald-100 mt-1 uppercase tracking-widest">Créditos: Elio Pimentel</span>
+          </span>
+          <User size={24} className="shrink-0" />
+        </a>
+      </div>
 
       <style>{`
         .custom-scrollbar::-webkit-scrollbar {
