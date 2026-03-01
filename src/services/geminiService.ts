@@ -1,5 +1,3 @@
-import { GoogleGenAI } from "@google/genai";
-
 const API_KEY = process.env.GEMINI_API_KEY;
 
 export async function getDirections(address: string, userLocation?: { lat: number; lng: number }) {
@@ -11,8 +9,6 @@ export async function getDirections(address: string, userLocation?: { lat: numbe
     };
   }
 
-  const ai = new GoogleGenAI({ apiKey: API_KEY });
-
   const prompt = `Redacta una guía detallada y elegante sobre cómo llegar a la siguiente sede de INPSASEL en Venezuela: "${address}". 
   ${userLocation ? `Ten en consideración que el usuario se encuentra actualmente cerca de las coordenadas geográficas ${userLocation.lat}, ${userLocation.lng}.` : ""}
   
@@ -22,49 +18,49 @@ export async function getDirections(address: string, userLocation?: { lat: numbe
   3. Divide la guía en tres secciones claras con encabezados Markdown en negrita: "📌 Contexto de la Ubicación", "🛣️ Ruta Sugerida" y "💡 Recomendaciones Adicionales".
   4. Proporciona puntos de referencia icónicos locales para facilitar la llegada. Todo en idioma español.`;
 
-  const config = {
-    tools: [{ googleMaps: {} }],
-    toolConfig: {
-      retrievalConfig: userLocation ? {
-        latLng: {
-          latitude: userLocation.lat,
-          longitude: userLocation.lng
-        }
-      } : undefined
+  const requestBody = {
+    contents: [{
+      role: "user",
+      parts: [{ text: prompt }]
+    }],
+    generationConfig: {
+      temperature: 0.7
     }
   };
 
-  const processResponse = (response: any) => {
-    const text = response.text;
-    const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks;
+  const fetchFromGemini = async (model: string) => {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${API_KEY}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(requestBody)
+    });
+
+    if (!response.ok) {
+      throw new Error(`API Error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    const groundingChunks = data.candidates?.[0]?.groundingMetadata?.groundingChunks;
     const mapLinks = groundingChunks
       ?.map((chunk: any) => chunk.maps?.uri)
       .filter(Boolean) || [];
+
+    if (!text) throw new Error("Empty response from Gemini");
 
     return { text, mapLinks };
   };
 
   try {
-    // Attempt 1: State-of-the-art Pro model
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-pro",
-      contents: prompt,
-      config,
-    });
-    return processResponse(response);
+    return await fetchFromGemini("gemini-2.5-pro");
   } catch (error) {
-    console.warn("Excepción con gemini-2.5-pro (posible límite de cuota), intentando gemini-2.5-flash como respaldo:", error);
+    console.warn("Excepción con gemini-2.5-pro, intentando gemini-2.5-flash como respaldo:", error);
 
     try {
-      // Attempt 2: Faster, more resilient Flash model fallback
-      const fallbackResponse = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: prompt,
-        config,
-      });
-      return processResponse(fallbackResponse);
+      return await fetchFromGemini("gemini-2.5-flash");
     } catch (fallbackError) {
-      console.error("Error definitivo al obtener direcciones desde Gemini (ambos modelos fallaron):", fallbackError);
+      console.error("Error definitivo al obtener direcciones desde Gemini:", fallbackError);
       return {
         text: "Hubo un pequeño retraso de red y no pudimos generar tu guía detallada en este instante. Por favor, selecciona la sede nuevamente o usa el mapa interactivo de arriba para guiarte.",
         mapLinks: []
