@@ -103,36 +103,36 @@ export default function App() {
   return (
     <div className="min-h-screen bg-white text-[#1A1A1A] font-sans selection:bg-blue-100">
       {/* Top Navigation Bar */}
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100 px-6 py-4 shadow-sm shadow-blue-900/5">
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100 px-4 md:px-6 py-4 shadow-sm shadow-blue-900/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-4 w-full md:w-auto">
-            <div className="w-12 h-12 bg-gradient-to-br from-[#004A99] to-[#002f66] rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-900/20">
-              <ShieldCheck size={28} />
+          <div className="flex items-center gap-3 md:gap-4 w-full md:w-auto">
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-[#004A99] to-[#002f66] rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-900/20 shrink-0">
+              <ShieldCheck className="w-6 h-6 md:w-7 md:h-7" />
             </div>
             <div>
-              <h1 className="text-2xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#004A99] to-blue-600">INPSASEL</h1>
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">Portal de Atención Ciudadana</p>
+              <h1 className="text-xl md:text-2xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#004A99] to-blue-600 leading-none">INPSASEL</h1>
+              <p className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.15em] md:tracking-[0.2em] text-gray-500 mt-1">Portal de Atención Ciudadana</p>
             </div>
           </div>
 
-          <div className="hidden md:flex items-center gap-8">
-            <div className="flex flex-col items-end">
-              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Tu Ubicación</span>
-              <div className="flex items-center gap-2 text-sm font-semibold">
+          <div className="flex w-full md:w-auto justify-between md:justify-end items-center gap-4 md:gap-8 pt-4 md:pt-0 border-t md:border-t-0 border-gray-100">
+            <div className="flex flex-col items-start md:items-end">
+              <span className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase tracking-widest">Tu Ubicación</span>
+              <div className="flex items-center gap-2 text-sm md:text-base font-semibold">
                 {userWeather ? (
                   <>
-                    <WeatherIcon code={userWeather.current.iconCode} size={16} className="text-blue-500" />
+                    <WeatherIcon code={userWeather.current.iconCode} size={18} className="text-blue-500" />
                     <span>{Math.round(userWeather.current.temp)}°C</span>
                   </>
                 ) : (
-                  <span className="text-gray-300">Cargando...</span>
+                  <span className="text-gray-300 text-xs">Cargando...</span>
                 )}
               </div>
             </div>
-            <div className="h-8 w-[1px] bg-gray-100"></div>
+            <div className="h-8 w-[1px] bg-gray-200 hidden md:block"></div>
             <div className="flex flex-col items-end">
-              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Hora Local</span>
-              <span className="text-sm font-mono font-bold text-[#004A99]">
+              <span className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase tracking-widest">Hora Local</span>
+              <span className="text-sm md:text-base font-mono font-bold text-[#004A99]">
                 {currentTime.toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit' })}
               </span>
             </div>
@@ -142,16 +142,16 @@ export default function App() {
 
       {/* Hero Section */}
       {!selectedLocation && (
-        <section className="relative overflow-hidden bg-[#F8FAFC] py-20 px-6 border-b border-gray-100">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"></div>
+        <section className="relative overflow-hidden bg-[#F8FAFC] py-12 md:py-20 px-4 md:px-6 border-b border-gray-100">
+          <div className="absolute top-0 right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-blue-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+          <div className="absolute bottom-0 left-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-emerald-500/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"></div>
 
           <div className="max-w-4xl mx-auto text-center relative z-10">
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="inline-block px-4 py-1.5 bg-white border border-gray-200 text-gray-600 text-xs font-bold rounded-full uppercase tracking-widest mb-8 shadow-sm"
+              className="inline-block px-3 py-1.5 md:px-4 bg-white border border-gray-200 text-gray-600 text-[10px] md:text-xs font-bold rounded-full uppercase tracking-widest mb-6 md:mb-8 shadow-sm"
             >
               Consultas Nacionales 📍
             </motion.div>
@@ -159,15 +159,15 @@ export default function App() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-5xl md:text-6xl font-black text-[#1A1A1A] mb-6 leading-tight"
+              className="text-4xl md:text-5xl lg:text-6xl font-black text-[#1A1A1A] mb-4 md:mb-6 leading-tight"
             >
-              Encuentra tu sede <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#004A99] to-blue-500">más cercana</span>
+              Encuentra tu sede <br className="hidden md:block" /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#004A99] to-blue-500">más cercana</span>
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-lg text-gray-500 mb-12 max-w-2xl mx-auto font-medium"
+              className="text-base md:text-lg text-gray-500 mb-8 md:mb-12 max-w-2xl mx-auto font-medium px-4"
             >
               Accede a la red nacional de sedes de Inpsasel. Obtén direcciones exactas,
               clima en tiempo real y recomendaciones de seguridad.
@@ -177,17 +177,17 @@ export default function App() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="relative max-w-2xl mx-auto group"
+              className="relative max-w-2xl mx-auto group px-2 md:px-0"
             >
-              <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-emerald-100 rounded-[2rem] blur opacity-50 group-hover:opacity-100 transition duration-500"></div>
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-emerald-100 rounded-[2rem] blur opacity-50 group-hover:opacity-100 transition duration-500 hidden md:block"></div>
               <div className="relative">
-                <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-[#004A99]/50" size={24} />
+                <Search className="absolute left-5 md:left-6 top-1/2 -translate-y-1/2 text-[#004A99]/50" size={20} md:size={24} />
                 <input
                   type="text"
-                  placeholder="Busca por estado o dirección completa..."
+                  placeholder="Busca por estado o dirección..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-16 pr-8 py-6 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-3xl shadow-xl shadow-blue-900/5 focus:ring-4 focus:ring-blue-500/20 focus:border-[#004A99] outline-none transition-all text-xl font-medium text-gray-800 placeholder-gray-400"
+                  className="w-full pl-12 md:pl-16 pr-6 md:pr-8 py-5 md:py-6 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl md:rounded-3xl shadow-xl shadow-blue-900/5 focus:ring-4 focus:ring-blue-500/20 focus:border-[#004A99] outline-none transition-all text-base md:text-xl font-medium text-gray-800 placeholder-gray-400"
                 />
               </div>
             </motion.div>
@@ -340,14 +340,14 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
                     {/* Directions Card */}
-                    <div className="bg-white rounded-[40px] p-10 border border-gray-100 shadow-sm">
-                      <div className="flex items-center gap-4 mb-8">
-                        <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center">
-                          <Navigation size={24} />
+                    <div className="bg-white rounded-3xl lg:rounded-[40px] p-6 lg:p-10 border border-gray-100 shadow-sm order-2 lg:order-1">
+                      <div className="flex items-center gap-4 mb-6 lg:mb-8">
+                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-blue-50 text-blue-600 rounded-xl lg:rounded-2xl flex items-center justify-center shrink-0">
+                          <Navigation className="w-5 h-5 lg:w-6 lg:h-6" />
                         </div>
-                        <h3 className="font-black text-xl">Guía de Llegada</h3>
+                        <h3 className="font-black text-lg lg:text-xl">Guía de Llegada</h3>
                       </div>
 
                       {loading ? (
@@ -357,19 +357,19 @@ export default function App() {
                           <div className="h-4 bg-gray-50 rounded w-4/6 animate-pulse"></div>
                         </div>
                       ) : (
-                        <div className="prose prose-blue max-w-none text-gray-600 leading-relaxed font-medium">
+                        <div className="prose prose-sm md:prose-base prose-blue max-w-none text-gray-600 leading-relaxed font-medium">
                           <ReactMarkdown>{directions?.text || "Instrucciones no disponibles."}</ReactMarkdown>
                         </div>
                       )}
                     </div>
 
                     {/* Weather Card */}
-                    <div className="bg-white rounded-[40px] p-10 border border-gray-100 shadow-sm">
-                      <div className="flex items-center gap-4 mb-8">
-                        <div className="w-12 h-12 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center">
-                          <Cloud size={24} />
+                    <div className="bg-white rounded-3xl lg:rounded-[40px] p-6 lg:p-10 border border-gray-100 shadow-sm order-1 lg:order-2">
+                      <div className="flex items-center gap-4 mb-6 lg:mb-8">
+                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-orange-50 text-orange-600 rounded-xl lg:rounded-2xl flex items-center justify-center shrink-0">
+                          <Cloud className="w-5 h-5 lg:w-6 lg:h-6" />
                         </div>
-                        <h3 className="font-black text-xl">Clima en Sede</h3>
+                        <h3 className="font-black text-lg lg:text-xl">Clima en Sede</h3>
                       </div>
 
                       {loading ? (
@@ -378,25 +378,25 @@ export default function App() {
                           <p className="text-sm font-bold text-gray-400">Sincronizando satélites...</p>
                         </div>
                       ) : locationWeather ? (
-                        <div className="space-y-10">
+                        <div className="space-y-8 lg:space-y-10">
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="text-6xl font-black tracking-tighter text-[#1A1A1A]">{Math.round(locationWeather.current.temp)}°C</p>
-                              <p className="text-sm font-bold text-gray-400 uppercase tracking-widest mt-2">{locationWeather.current.description}</p>
+                              <p className="text-5xl lg:text-6xl font-black tracking-tighter text-[#1A1A1A]">{Math.round(locationWeather.current.temp)}°C</p>
+                              <p className="text-xs lg:text-sm font-bold text-gray-400 uppercase tracking-widest mt-2">{locationWeather.current.description}</p>
                             </div>
-                            <WeatherIcon code={locationWeather.current.iconCode} className="text-orange-400" size={80} />
+                            <WeatherIcon code={locationWeather.current.iconCode} className="text-orange-400 w-16 h-16 lg:w-20 lg:h-20" size={80} />
                           </div>
 
-                          <div className="pt-8 border-t border-gray-50">
-                            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-300 mb-6">Próximos Días</h4>
-                            <div className="grid grid-cols-4 gap-4">
+                          <div className="pt-6 lg:pt-8 border-t border-gray-50">
+                            <h4 className="text-[9px] lg:text-[10px] font-black uppercase tracking-[0.2em] text-gray-300 mb-4 lg:mb-6">Próximos Días</h4>
+                            <div className="grid grid-cols-4 gap-2 lg:gap-4">
                               {locationWeather.daily.slice(1, 5).map((day, idx) => (
-                                <div key={idx} className="text-center group">
-                                  <p className="text-[10px] font-black text-gray-400 uppercase mb-3 group-hover:text-blue-600 transition-colors">
+                                <div key={idx} className="text-center group bg-gray-50/50 rounded-xl p-2 lg:p-0 lg:bg-transparent">
+                                  <p className="text-[9px] lg:text-[10px] font-black text-gray-400 uppercase mb-2 lg:mb-3 group-hover:text-blue-600 transition-colors">
                                     {new Date(day.date).toLocaleDateString('es-VE', { weekday: 'short' })}
                                   </p>
-                                  <WeatherIcon code={day.iconCode} className="mx-auto mb-3 text-gray-300 group-hover:text-blue-400 transition-colors" size={24} />
-                                  <p className="text-sm font-black text-[#1A1A1A]">{Math.round(day.maxTemp)}°</p>
+                                  <WeatherIcon code={day.iconCode} className="mx-auto mb-2 lg:mb-3 text-gray-300 group-hover:text-blue-400 transition-colors w-5 h-5 lg:w-6 lg:h-6" size={24} />
+                                  <p className="text-xs lg:text-sm font-black text-[#1A1A1A]">{Math.round(day.maxTemp)}°</p>
                                 </div>
                               ))}
                             </div>
