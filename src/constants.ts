@@ -13,7 +13,7 @@ export const LOCATIONS: Location[] = [
   { id: 'barinas', state: 'Barinas', address: 'Calle 3 Araguaney, Sector Campo La Meza, Parcela 23 O2, Alto Barinas.' },
   { id: 'bolivar', state: 'Bolívar', address: 'Unare 1, Av. Carrera Aerocuar, Centro Empresarial Etna Al Lado Del Edificio Pdvsa, Puerto Ordaz.' },
   { id: 'capital', state: 'Capital y La Guaira', address: 'Av. Universidad, Esquina De San Francisco, Centro Mercantil San Francisco, Piso 5, Parroquia Catedral, Dist. Capital.' },
-  { id: 'taquilla_unica_caracas', state: 'Taquilla Única', address: 'Taquilla Única INPSASEL - Av. Este 6 Bis, Caracas 1010, Distrito Capital, Venezuela.' },
+  { id: 'taquilla_unica_caracas', state: 'Instituto Nacional de Prevención, Salud y Seguridad Laboral', address: 'Av. Este 6 Bis, Caracas 1010, Distrito Capital, Venezuela' },
   { id: 'carabobo', state: 'Carabobo', address: 'Av. Sucre, Calle Briceño, Antiguo Seguro Social de Guacara, Municipio Guacara, Parroquia Guacara.' },
   { id: 'cojedes', state: 'Cojedes', address: 'Av.León Miski, Sector Hilanderia, Edificio Pdval 1er Nivel, Tinaquillo.' },
   { id: 'costa_oriental', state: 'Costa Oriental del Lago', address: 'Calle Bermúdez, Casa N°72, Parroquia Alonso Ojeda, Municipio Lagunilla.' },
