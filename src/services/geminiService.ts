@@ -4,7 +4,11 @@ const API_KEY = process.env.GEMINI_API_KEY;
 
 export async function getDirections(address: string, userLocation?: { lat: number; lng: number }) {
   if (!API_KEY) {
-    throw new Error("GEMINI_API_KEY is not set");
+    console.error("CRITICAL: GEMINI_API_KEY is completely missing in Vercel or .env");
+    return {
+      text: "Falta configurar la Clave de API de Gemini en Vercel. Por favor, añade la variable de entorno GEMINI_API_KEY en tu panel de control de Vercel para activar la Inteligencia Artificial.",
+      mapLinks: []
+    };
   }
 
   const ai = new GoogleGenAI({ apiKey: API_KEY });
