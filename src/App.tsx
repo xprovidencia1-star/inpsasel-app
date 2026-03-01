@@ -17,7 +17,9 @@ import {
   ShieldCheck,
   Info,
   Map as MapIcon,
-  User
+  User,
+  Phone,
+  Mail
 } from 'lucide-react';
 import { LOCATIONS, Location } from './constants';
 import { getDirections } from './services/geminiService';
@@ -312,31 +314,54 @@ export default function App() {
                   </button>
 
                   {/* Detailed View Header */}
-                  <div className="bg-white rounded-[40px] p-10 border border-gray-100 shadow-2xl shadow-blue-100/20">
-                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
-                      <div className="max-w-xl">
+                  <div className="bg-white rounded-[40px] p-6 md:p-10 border border-gray-100 shadow-2xl shadow-blue-100/20">
+                    <div className="flex flex-col md:flex-row justify-between gap-8">
+                      <div className="max-w-2xl">
                         <span className="inline-block px-4 py-1.5 bg-blue-50 text-blue-700 text-[10px] font-black rounded-full uppercase tracking-widest mb-6">
                           Sede {selectedLocation.state}
                         </span>
-                        <h2 className="text-4xl font-black text-[#1A1A1A] leading-tight mb-4">{selectedLocation.address}</h2>
+                        <h2 className="text-3xl md:text-5xl font-black text-[#1A1A1A] leading-tight mb-6">{selectedLocation.address}</h2>
+
+                        {/* Contact Information */}
+                        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                          {selectedLocation.phone && (
+                            <div className="flex items-center gap-3 bg-gray-50 px-4 py-3 rounded-2xl border border-gray-100">
+                              <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center shrink-0">
+                                <Phone size={18} />
+                              </div>
+                              <div>
+                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Teléfono</p>
+                                <p className="text-sm font-black text-gray-800">{selectedLocation.phone}</p>
+                              </div>
+                            </div>
+                          )}
+                          {selectedLocation.email && (
+                            <div className="flex items-center gap-3 bg-gray-50 px-4 py-3 rounded-2xl border border-gray-100">
+                              <div className="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center shrink-0">
+                                <Mail size={18} />
+                              </div>
+                              <div>
+                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Correo</p>
+                                <a href={`mailto:${selectedLocation.email}`} className="text-sm font-black text-blue-600 hover:underline">{selectedLocation.email}</a>
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
 
-                      {loading ? (
-                        <div className="flex items-center gap-3 text-blue-600 font-bold bg-blue-50 px-6 py-3 rounded-2xl">
-                          <Loader2 className="animate-spin" size={20} />
-                          Localizando...
-                        </div>
-                      ) : directions?.mapLinks[0] && (
-                        <a
-                          href={directions.mapLinks[0]}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex items-center gap-3 bg-[#004A99] text-white px-8 py-4 rounded-2xl font-black hover:bg-blue-800 transition-all shadow-xl shadow-blue-200 hover:-translate-y-1"
-                        >
-                          <ExternalLink size={20} />
-                          Abrir en Maps
-                        </a>
-                      )}
+                      <div className="flex flex-col items-start md:items-end justify-end shrink-0">
+                        {selectedLocation.mapLink && (
+                          <a
+                            href={selectedLocation.mapLink}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-5 rounded-full font-black text-lg hover:from-blue-500 hover:to-blue-600 transition-all shadow-xl shadow-blue-500/30 hover:-translate-y-2 hover:scale-105 active:scale-95"
+                          >
+                            <MapPin size={24} className="animate-bounce" />
+                            Ver en Google Maps
+                          </a>
+                        )}
+                      </div>
                     </div>
                   </div>
 
