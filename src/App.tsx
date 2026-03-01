@@ -418,7 +418,7 @@ export default function App() {
                           loading="lazy"
                           allowFullScreen
                           referrerPolicy="no-referrer-when-downgrade"
-                          src={`https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY_HERE&q=${encodeURIComponent(selectedLocation.lat && selectedLocation.lng ? `${selectedLocation.lat},${selectedLocation.lng}` : selectedLocation.address)}`}
+                          src={`https://maps.google.com/maps?q=${encodeURIComponent(selectedLocation.lat && selectedLocation.lng ? `${selectedLocation.lat},${selectedLocation.lng}` : selectedLocation.address)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
                         ></iframe>
                       </div>
 
