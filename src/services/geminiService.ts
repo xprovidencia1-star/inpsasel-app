@@ -8,7 +8,7 @@ export async function getDirections(address: string, userLocation?: { lat: numbe
   }
 
   const ai = new GoogleGenAI({ apiKey: API_KEY });
-  const model = "gemini-2.5-flash";
+  const model = "gemini-2.5-pro";
 
   const prompt = `Redacta una guía detallada y elegante sobre cómo llegar a la siguiente sede de INPSASEL en Venezuela: "${address}". 
   ${userLocation ? `Ten en consideración que el usuario se encuentra actualmente cerca de las coordenadas geográficas ${userLocation.lat}, ${userLocation.lng}.` : ""}
