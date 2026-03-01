@@ -6,10 +6,10 @@ export async function geocodeAddress(address: string): Promise<{ lat: number; ln
   if (!API_KEY) return null;
 
   const ai = new GoogleGenAI({ apiKey: API_KEY });
-  
+
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: "gemini-2.5-flash",
       contents: `Proporciona las coordenadas geográficas (latitud y longitud) para esta dirección en Venezuela: "${address}". Responde únicamente en formato JSON con las llaves "lat" y "lng".`,
       config: {
         responseMimeType: "application/json",
